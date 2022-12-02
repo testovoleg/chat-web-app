@@ -1,0 +1,7 @@
+docker build . -f Dockerfile -t 5sauto/team:v0.001
+docker login -u 5sauto -p dckr_pat_DAfDYaBgpnEx973PrpPB8U5c3I8
+docker push 5sauto/team:v0.001
+
+--------------------------------
+current ver: v0.001
+--------------------------------

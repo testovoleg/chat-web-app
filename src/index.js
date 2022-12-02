@@ -26,27 +26,27 @@ axios
 		window.config = config;
 
 		// Init Sentry
-		if (!isLocalHost()) {
-			Sentry.init({
-				debug: true,
-				dsn: config.APP_SENTRY_DSN,
-				release: packageJson.version,
-				integrations: [new Integrations.BrowserTracing()],
-				tracesSampleRate: 0.002,
-				ignoreErrors: ['ResizeObserver loop limit exceeded'],
-				beforeSend(event, hint) {
-					// Check if it is an exception, and if so, show the report dialog
-					if (event.exception) {
-						Sentry.showReportDialog({ eventId: event.event_id });
-					}
-					return event;
-				},
-			});
+		// if (!isLocalHost()) {
+		// 	Sentry.init({
+		// 		debug: true,
+		// 		dsn: config.APP_SENTRY_DSN,
+		// 		release: packageJson.version,
+		// 		integrations: [new Integrations.BrowserTracing()],
+		// 		tracesSampleRate: 0.002,
+		// 		ignoreErrors: ['ResizeObserver loop limit exceeded'],
+		// 		beforeSend(event, hint) {
+		// 			// Check if it is an exception, and if so, show the report dialog
+		// 			if (event.exception) {
+		// 				Sentry.showReportDialog({ eventId: event.event_id });
+		// 			}
+		// 			return event;
+		// 		},
+		// 	});
 
-			if (!isEmptyString(config.APP_SENTRY_TAG_CLIENT)) {
-				Sentry.setTag('client', config.APP_SENTRY_TAG_CLIENT);
-			}
-		}
+		// 	if (!isEmptyString(config.APP_SENTRY_TAG_CLIENT)) {
+		// 		Sentry.setTag('client', config.APP_SENTRY_TAG_CLIENT);
+		// 	}
+		// }
 
 		const apiService = new ApiService(config);
 
