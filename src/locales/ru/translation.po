@@ -189,7 +189,7 @@ msgid "Deleted response successfully!"
 msgstr "Ответ успешно удален!"
 
 msgid "Hey"
-msgstr "Привет"
+msgstr "Здравствуйте"
 
 msgid "Choose a contact to start a conversation"
 msgstr "Выберите контакт, чтобы начать разговор"
@@ -240,7 +240,7 @@ msgid "No"
 msgstr "Нет"
 
 msgid "This chat has expired. You need to answer with template messages."
-msgstr "Срок действия этого чата истек. Отвечать нужно шаблонными сообщениями."
+msgstr "Срок действия этого чата истек. Начинать нужно с шаблонного сообщения."
 
 msgid "Type a message"
 msgstr "Введите сообщение"
@@ -408,7 +408,7 @@ msgid "None"
 msgstr "Никто"
 
 msgid "Vertical"
-msgstr "Вертикальный"
+msgstr "Сфера услуг"
 
 msgid "You must fill all fields!"
 msgstr "Заполните все поля!"
@@ -461,7 +461,7 @@ msgid "All"
 msgstr "Все"
 
 msgid "Me"
-msgstr "Мне"
+msgstr "Мои"
 
 msgid "Group"
 msgstr "Группа"
@@ -600,3 +600,9 @@ msgstr "Сообщение через объявление"
 
 msgid "Message via post"
 msgstr "Сообщение по почте"
+
+msgid "Last message"
+msgstr "Последнее сообщение"
+
+msgid "Yesterday"
+msgstr "Вчера"
