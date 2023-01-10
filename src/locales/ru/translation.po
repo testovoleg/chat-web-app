@@ -330,7 +330,7 @@ msgid "Started at <1></1>"
 msgstr "Начато в <1></1>"
 
 msgid "Automotive"
-msgstr "Автомобильный"
+msgstr "Автомобили"
 
 msgid "Beauty, Spa and Salon"
 msgstr "Красота, Спа и Салон красоты"
@@ -405,7 +405,7 @@ msgid "Description"
 msgstr "Описание"
 
 msgid "None"
-msgstr "Никто"
+msgstr "Отсутствует"
 
 msgid "Vertical"
 msgstr "Сфера услуг"
