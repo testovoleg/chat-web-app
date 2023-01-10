@@ -5,7 +5,8 @@ docker build . -f Dockerfile -t 5sauto/team:v0.001
 current ver: v0.001
 --------------------------------
 
-docker login -u 5s hub.5-systems.ru
+docker login -u 5s -p 5sRegistry hub.5-systems.ru
+
 5sRegistry
 
 Команда для того чтобы сделать доп.тэг для отправки на хаб:
