@@ -6,6 +6,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 import TRANSLATION_EN from './locales/en/translation.json';
 import TRANSLATION_TR from './locales/tr/translation.json';
+import TRANSLATION_RU from './locales/ru/translation.json';
 import sprintf from 'i18next-sprintf-postprocessor';
 
 i18n
@@ -36,8 +37,9 @@ i18n
 		returnEmptyString: false,
 		// saveMissing: true,
 		resources: {
-			en: { translation: TRANSLATION_EN },
+			// en: { translation: TRANSLATION_EN },
 			// tr: { translation: TRANSLATION_TR },
+			ru: { translation: TRANSLATION_RU },
 		},
 		interpolation: {
 			escapeValue: false, // not needed for react as it escapes by default
