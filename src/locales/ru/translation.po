@@ -1,0 +1,602 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: get.chat 1.0\n"
+"Report-Msgid-Bugs-To: support@get.chat \n"
+"Last-Translator: Buloichyk Aliaksandr alexander.meno@gmail.com\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "<0>%s</0> has changed chat assignments."
+msgstr "<0>%s</0>, изменил(а) назначение чата."
+
+msgid "Chat assignments were changed."
+msgstr "Назначение чата изменено."
+
+msgid "assigned to user: <1>%s</1>"
+msgstr "назначено пользователю: <1>%s</1>"
+
+msgid "assigned to group: <1>%s</1>"
+msgstr "назначено группе: <1>%s</1>"
+
+msgid "cleared assigned user"
+msgstr "удален назначенный пользователь"
+
+msgid "cleared assigned group"
+msgstr "удалена назначенная группа"
+
+msgid "There is no phone number"
+msgstr "Не указан номер телефона"
+
+msgid "%d more phone number"
+msgid_plural "%d more phone numbers"
+msgstr[0] "%d больше номера телефона"
+msgstr[1] "%d больше номера телефона"
+
+msgid "Choose a phone number"
+msgstr "Выберите номер"
+
+msgid "New chat"
+msgstr "Новый чат"
+
+msgid "Start a chat with a phone number"
+msgstr "Начать чат с номером"
+
+msgid "Начать"
+msgstr "Başlat"
+
+msgid "Persons"
+msgstr "Люди"
+
+msgid "Contacts"
+msgstr "Контакты"
+
+msgid "No persons or contacts found for <1>%s</1>"
+msgstr "Не найдены люди или контакты для: <1>%s</1>"
+
+msgid "Unsupported file type"
+msgstr "Неподдерживаемый тип файла"
+
+msgid "Close"
+msgstr "Закрыть"
+
+msgid "Download"
+msgstr "Загрузка"
+
+msgid "Only admins and users can access to our web app."
+msgstr "Только администраторы и пользователи могут получить доступ к нашему веб-приложению."
+
+msgid "You are not logged in."
+msgstr "Вы не авторизованы."
+
+msgid "Invalid token."
+msgstr "Неверный токен."
+
+msgid "Incorrect username or password."
+msgstr "Неверное имя пользователя или пароль."
+
+msgid "An error has occurred. Please try again later."
+msgstr "шибка. Пожалуйста, попробуйте позже."
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "Log in"
+msgstr "Войти"
+
+msgid "Welcome"
+msgstr "Здравствуйте"
+
+msgid "We are validating your session, please wait."
+msgstr "Мы проверяем вашу сессию, пожалуйста, подождите."
+
+msgid "Please login to start"
+msgstr "Пожалуйста, авторизуйтесь"
+
+msgid "Search For Messages"
+msgstr "Поиск сообщений"
+
+msgid "This chat could not be assigned as its assignments have been changed by another user recently."
+msgstr "Невозможно внести изменения, так как недавно чат был изменен другим пользователем."
+
+msgid "This contact has no phone number."
+msgstr "У этого контакта нет номера телефона"
+
+msgid "This chat is already assigned to another user. You can change the assignment of this chat only if the current person will unassign themselves or someone with admin access will clear the assignment."
+msgstr "Этот чат уже назначен другому пользователю. Вы можете изменить назначение этого чата только в том случае, если этот пользователь отменит его самостоятельно. Так же это могут сделать пользователи с правами администратора"
+
+msgid "You can assign this chat to a user or a group."
+msgstr "Вы можете назначить этот чат пользователю или группе."
+
+msgid "Unassigned"
+msgstr "Не назначено"
+
+msgid "Update"
+msgstr "Обновить"
+
+msgid "Chat tags"
+msgstr "Теги чата"
+
+msgid "You can add or remove tags for this chat."
+msgstr "Вы можете добавить или удалить теги для этого чата."
+
+msgid "Current tags"
+msgstr "Текущие теги"
+
+msgid "Empty"
+msgstr "Пусто"
+
+msgid "Manage tags"
+msgstr "Управление тегами"
+
+msgid "Tags"
+msgstr "Теги"
+
+msgid "You can filter chats by tags."
+msgstr "Вы можете отсортировать чаты по тегам."
+
+msgid "Contact Details"
+msgstr "Детали контакта"
+
+msgid "Contact details"
+msgstr "Детали контакта"
+
+msgid "Never"
+msgstr "Никогда"
+
+msgid "WhatsApp Phone Number"
+msgstr "Номер телефона WhatsApp"
+
+msgid "Assigned to: <1>%s</1>"
+msgstr "Назначено: <1>%s</1>"
+
+msgid "Assigned group: <1>%s</1>"
+msgstr "Назначенная группа"
+
+msgid "Phone number"
+msgstr "Номер телефона"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Loading: %s"
+msgstr "Загрузка: %s"
+
+msgid "Contact us"
+msgstr "Свяжитесь с нами"
+
+msgid "Skip"
+msgstr "Пропустить"
+
+msgid "Something went wrong, this will be fixed automatically"
+msgstr "Что-то пошло не так, оно исправится автоматически"
+
+msgid "There are unsent messages in the chat. If you continue, they will be deleted. Are you sure you want to continue?"
+msgstr "В чате есть неотправленные сообщения, они будут удалены. Вы уверены, что хотите продолжить?"
+
+msgid "An error has occurred."
+msgstr "Произошла ошибка."
+
+msgid "Saved as response successfully!"
+msgstr "Ответ успешно сохранен!"
+
+msgid "Deleted response successfully!"
+msgstr "Ответ успешно удален!"
+
+msgid "Hey"
+msgstr "Привет"
+
+msgid "Choose a contact to start a conversation"
+msgstr "Выберите контакт, чтобы начать разговор"
+
+msgid "Inactive"
+msgstr "Неактивный"
+
+msgid "Failed to send some messages!"
+msgstr "Не удалось отправить несколько сообщений!"
+
+msgid "Assign chat"
+msgstr "Назначить чат"
+
+msgid "Change tags"
+msgstr "Изменить теги"
+
+msgid "Toggle assignment and tagging history"
+msgstr "Переключить историю назначений и тегов"
+
+msgid "Preview"
+msgstr "Предпросмотр"
+
+msgid "Add a caption..."
+msgstr "Добавить подпись..."
+
+msgid "Add more"
+msgstr "Добавить больше"
+
+msgid "Drag and drop here"
+msgstr "Перетащите сюда"
+
+msgid "No response message have been saved yet."
+msgstr "Ответное сообщение еще не сохранено."
+
+msgid "Send"
+msgstr "Отправить"
+
+msgid "Oops!"
+msgstr "Ой!"
+
+msgid "Are you sure you want to delete this saved response?"
+msgstr "Вы уверены, что хотите удалить этот ответ?"
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "No"
+msgstr "Нет"
+
+msgid "This chat has expired. You need to answer with template messages."
+msgstr "Срок действия этого чата истек. Отвечать нужно шаблонными сообщениями."
+
+msgid "Type a message"
+msgstr "Введите сообщение"
+
+msgid "Send a message"
+msgstr "Отправить сообщение"
+
+msgid "You must grant microphone permission."
+msgstr "Вы должны предоставить разрешение на использование микрофона."
+
+msgid "This feature is not supported on your browser."
+msgstr "Эта функция не поддерживается вашим браузером."
+
+msgid "You must open the inbox in a new tab to access this feature."
+msgstr "Вы должны открыть папку «Входящие» на новой вкладке, чтобы получить доступ к этой функции."
+
+msgid "Go to inbox"
+msgstr "Перейти во входящие"
+
+msgid "Forwarded"
+msgstr "Перенаправлено"
+
+msgid "Document"
+msgstr "Документ"
+
+msgid "Save this response"
+msgstr "Сохранить этот ответ"
+
+msgid "Your template was sent to the user successfully, however we couldn't load templates at this moment. Please check again in a while, sorry!"
+msgstr "Ваш шаблон был успешно отправлен пользователю, однако в данный момент мы не можем загрузить шаблоны. Пожалуйста, проверьте еще раз через некоторое время, извините!"
+
+msgid "Missing template"
+msgstr "Отсутствует шаблон сообщения"
+
+msgid "Template message"
+msgstr "Шаблон сообщения"
+
+msgid "Interactive message"
+msgstr "Интерактивное сообщение"
+
+msgid "Image"
+msgstr "Изображение"
+
+msgid "Video"
+msgstr "Видео"
+
+msgid "Voice"
+msgstr "Запись"
+
+msgid "Audio"
+msgstr "Аудио"
+
+msgid "Sticker"
+msgstr "Стикер"
+
+msgid "Template"
+msgstr "Шаблон"
+
+msgid "Interactive"
+msgstr "Интерактив"
+
+msgid "<0>%(username)s</0> has added tag: <4>%(tag)s</4>."
+msgstr "<0>%(username)s</0> добавил(а) тег: <4>%(tag)s</4>."
+
+msgid "<0>%(username)s</0> has removed tag: <4>%(tag)s</4>."
+msgstr "<0>%(username)s</0> удалил(а) тег: <4>%(tag)s</4>."
+
+msgid "A tag was added: <3>%(tag)s</3>."
+msgstr "Добавлен тег: <3>%(tag)s</3>."
+
+msgid "A tag was removed: <3>%(tag)s</3>."
+msgstr "Удален тег: <3>%(tag)s</3>."
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Bulk send"
+msgstr "Массовая рассылка"
+
+msgid "Cancel"
+msgstr "Отменить"
+
+msgid "Selected %(contacts_count)d contact(s) and %(tags_count)d tag(s)."
+msgstr "Выбраны %(contacts_count)d контакт(ы) and %(tags_count)d тег(и)."
+
+msgid "Started at <1></1>"
+msgstr "Начато в <1></1>"
+
+msgid "Automotive"
+msgstr "Автомобильный"
+
+msgid "Beauty, Spa and Salon"
+msgstr "Красота, Спа и Салон красоты"
+
+msgid "Clothing and Apparel"
+msgstr "Одежда и аксессуары"
+
+msgid "Education"
+msgstr "Образование"
+
+msgid "Entertainment"
+msgstr "Развлечения"
+
+msgid "Event Planning and Service"
+msgstr "Планирование мероприятий и обслуживание"
+
+msgid "Finance and Banking"
+msgstr "Банк и финансы"
+
+msgid "Food and Grocery"
+msgstr "Еда и продукты"
+
+msgid "Public Service"
+msgstr "Государственная служба"
+
+msgid "Hotel and Lodging"
+msgstr "Гостиница и жилье"
+
+msgid "Medical and Health"
+msgstr "Медицина и здоровье"
+
+msgid "Non-profit"
+msgstr "Некоммерческие услуги"
+
+msgid "Professional Services"
+msgstr "Профессиональные услуги"
+
+msgid "Shopping and Retail"
+msgstr "Покупки и розничная торговля"
+
+msgid "Travel and Transportation"
+msgstr "Путешествия и транспорт"
+
+msgid "Restaurant"
+msgstr "Рестораны"
+
+msgid "Other"
+msgstr "Другое"
+
+msgid "Personal Profile"
+msgstr "Личный профиль"
+
+msgid "Profile"
+msgstr "Профиль"
+
+msgid "Change password"
+msgstr "Изменить пароль"
+
+msgid "Business Profile"
+msgstr "Бизнес-профиль"
+
+msgid "Loading"
+msgstr "Загрузка"
+
+msgid "About"
+msgstr "О компании"
+
+msgid "Address"
+msgstr "Адрес"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "None"
+msgstr "Никто"
+
+msgid "Vertical"
+msgstr "Вертикальный"
+
+msgid "You must fill all fields!"
+msgstr "Заполните все поля!"
+
+msgid "Passwords must match!"
+msgstr "Пароли должны совпадать!"
+
+msgid "Changed password successfully"
+msgstr "Пароль успешно изменен"
+
+msgid "Current password"
+msgstr "Текущий пароль"
+
+msgid "New password"
+msgstr "Новый пароль"
+
+msgid "New password (repeat)"
+msgstr "Новый пароль (подтверждение)"
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "Success"
+msgstr "Успех"
+
+msgid "Change"
+msgstr "Изменить"
+
+msgid "Click to retry."
+msgstr "Нажмите, чтобы повторить"
+
+msgid "Last attempt at: <1></1>"
+msgstr "Последняя попытка: <1></1>"
+
+msgid "New messages"
+msgstr "Новые сообщения"
+
+msgid "You have new messages!"
+msgstr "У вас есть новые сообщения!"
+
+msgid "Showing only: <1></1> <3>%(tag)s</3> (%(count)d chat)"
+msgid_plural "Showing only: <1></1> <3>%(tag)s</3> (%(count)d chats)"
+msgstr[0] "Показано только: <1></1> <3>%(tag)s</3> (%(count)d sohbet)"
+msgstr[1] "Показано только: <1></1> <3>%(tag)s</3> (%(count)d sohbet)"
+
+msgid "Click to clear filter"
+msgstr "Нажмите для снятия отбора"
+
+msgid "All"
+msgstr "Все"
+
+msgid "Me"
+msgstr "Мне"
+
+msgid "Group"
+msgstr "Группа"
+
+msgid "Messages"
+msgstr "Сообщения"
+
+msgid "Refresh"
+msgstr "Обновить"
+
+msgid "Refresh contacts"
+msgstr "Обновить контакты"
+
+msgid "Admin panel"
+msgstr "Панель администратора"
+
+msgid "Settings (App Only)"
+msgstr "Настройки (только приложение)"
+
+msgid "Logout"
+msgstr "Выйти"
+
+msgid "%d new messages"
+msgstr "%d новых сообщений"
+
+msgid "%s left"
+msgstr "%s осталось"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Uploading a media file. Please wait..."
+msgstr "Загрузка файла. Пожалуйста, подождите..."
+
+msgid "Массовая рассылка(ID: %s) не может быть отправлена получателям."
+msgstr ""
+
+msgid "Recipient: <1>%s</1>"
+msgstr "Получатель: <1>%s</1>"
+
+msgid "Message: <1>%s</1>"
+msgstr "Сообщение: <1>%s</1>"
+
+msgid "Notifications"
+msgstr "Уведомления"
+
+msgid "You have no notifications"
+msgstr "Нет уведомлений"
+
+msgid "Options"
+msgstr "Настройки"
+
+msgid "Location"
+msgstr "Место расположения"
+
+msgid "Location: <1>%s</1>"
+msgstr "Lokasyon: <1>%s</1>"
+
+msgid "<0>Product retailer ID<0>: %s"
+msgstr "<0>ID Продавца<0>: %s"
+
+msgid "<0>Catalog ID</0>: %s"
+msgstr "<0>ID Каталога</0>: %s"
+
+msgid "<0>Quantity</0>: %d"
+msgstr "<0>Количество</0>: %d"
+
+msgid "<0>Price</0>: %d %s"
+msgstr "<0>Цена</0>: %d %s"
+
+msgid "On WhatsApp, your business profile photo has bigger resolution than shown here."
+msgstr "В WhatsApp фотография вашего бизнес-профиля имеет большее разрешение, чем показано здесь."
+
+msgid "Copied!"
+msgstr "Скопировано!"
+
+msgid "Missing parameters"
+msgstr "Отсутствуют параметры"
+
+msgid "You need to fill the parameters!"
+msgstr "Заполните параметры!"
+
+msgid "Enter a link to file"
+msgstr "Введите ссылку на файл"
+
+msgid "Link to file"
+msgstr "Ссылка на файл"
+
+msgid "Upload a file"
+msgstr "Загрузить файл"
+
+msgid "Enter a link to file instead"
+msgstr "Указать ссылку на файл"
+
+msgid "Upload a file instead"
+msgstr "Загрузить файл"
+
+msgid "Type: %s"
+msgstr "Тип: %s"
+
+msgid "Retry"
+msgstr "Повторить"
+
+msgid "Please wait, as %s are being loaded..."
+msgstr "Пожалуйста, подождите, идет загрузка %s..."
+
+msgid "Upload CSV"
+msgstr "Загрузить CSV"
+
+msgid "Next"
+msgstr "Следующий"
+
+msgid "Bulk send a template"
+msgstr "Массовая отправка шаблона"
+
+msgid "Bulk send a voice message"
+msgstr "Массовая отправка голосового сообщения"
+
+msgid "Bulk send template with CSV"
+msgstr "Массовая отправка шаблона в формате CSV"
+
+msgid "Please select up to %s direct recipients."
+msgstr "Пожалуйста, выберите до %s прямых получателей."
+
+msgid "Please select tags that target up to %s recipients in total."
+msgstr "Пожалуйста, выберите теги, предназначенные для получателей до %s."
+
+msgid "Search"
+msgstr "Поиск"
+
+msgid "Search for contacts"
+msgstr "Поиск контактов"
+
+msgid "Message via ad"
+msgstr "Сообщение через объявление"
+
+msgid "Message via post"
+msgstr "Сообщение по почте"
