@@ -19,3 +19,8 @@ docker push hub.5-systems.ru/team:v0.001
 
 docker login -u 5sauto -p dckr_pat_DAfDYaBgpnEx973PrpPB8U5c3I8
 docker push 5sauto/team:v0.001
+
+
+
+# Ory 
+/C/ory/ory.exe proxy http://localhost:3000 --project elated-vaughan-v12xa14h4n

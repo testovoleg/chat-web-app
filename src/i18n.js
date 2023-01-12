@@ -24,7 +24,7 @@ i18n
 	// for all options read: https://www.i18next.com/overview/configuration-options
 	.init({
 		// lng: 'en',
-		fallbackLng: 'en',
+		fallbackLng: 'ru',
 		compatibilityJSON: 'v4',
 		debug: false,
 		overloadTranslationOptionHandler: sprintf.overloadTranslationOptionHandler,

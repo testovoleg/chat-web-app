@@ -1,5 +1,12 @@
 [![](https://img.shields.io/gitlab/pipeline-status/get.chat/web-app.svg?branch=master)](https://gitlab.com/get.chat/web-app/-/pipelines/)
 
+
+
+# ory
+Add this strings in file settings.json (CTRL+SHIFT+P - settings.json Personal)
+    "typescript.validate.enable": false,
+    "javascript.validate.enable": false
+
 # get.chat Web App
 
 get.chat Web App
