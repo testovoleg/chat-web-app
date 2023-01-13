@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { ApplicationContext } from '../contexts/ApplicationContext';
 import packageJson from '../../package.json';
 
+
+
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
 		zIndex: theme.zIndex.drawer + 1,
@@ -18,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login(props) {
+
 	const { apiService } = React.useContext(ApplicationContext);
 
 	const { t } = useTranslation();
@@ -123,6 +126,7 @@ export default function Login(props) {
 	return (
 		<div className="login">
 			<Fade in={true}>
+			
 				<div className="login__body">
 					<div className="login__body__logoWrapper">
 						<img
