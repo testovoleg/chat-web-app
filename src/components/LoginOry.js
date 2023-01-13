@@ -12,10 +12,13 @@ import { ApplicationContext } from '../contexts/ApplicationContext';
 import packageJson from '../../package.json';
 import { FrontendApi, Configuration, Session, Identity } from "@ory/client"
 
-// Get your Ory url from .env
-// Or localhost for local development
-// Почитать про API ORY можно по ссылке https://www.ory.sh/docs/reference/api
-const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000/.ory"
+//	Get your Ory url from .env
+//	Or localhost for local development
+//	Почитать про API ORY можно по ссылке https://www.ory.sh/docs/reference/api
+//	Если ory proxy http://localhost:3000, то добавляем .ory, при этом после входа переадресовывать не умеет на локалхост
+//	Правила переадресации в консоли ORY, ссылка скорее всего непостоянная https://console.ory.sh/projects/54f40439-c43c-4331-8247-5f907ea49327/browser-redirects
+//	Если ory tunnel --dev http://localhost:3000, то без .ory
+const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000/.ory" 
 const ory = new FrontendApi(
   new Configuration({
     basePath,
@@ -93,7 +96,7 @@ export default function Login(props) {
 		//const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
 		
 		if (token) {
-			storeToken(token); //Сохранить токен в кэше == window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
+			storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
 			setValidatingToken(true);
 			console.log('Токен типовой аутентификации:', token);
 			apiService.baseCall(
@@ -113,38 +116,6 @@ export default function Login(props) {
 		
 	}, []);
 
-  // Returns either the email or the username depending on the user's Identity Schema
-
-
-
-
-	/* useEffect(() => {
-		if (errorCase) {
-			setLoginError(errorMessages[errorCase]);
-
-			if (errorCase === 'invalidToken') {
-				logoutToClearSession();
-			}
-		}
-
-		const token = getToken();
-		if (token) {
-			setValidatingToken(true);
-
-			apiService.baseCall(
-				(response) => {
-					// Redirect to main route
-					history.push('/main');
-				},
-				(error) => {
-					setValidatingToken(false);
-
-					// TODO: Make sure the response is Unauthorized
-					clearToken();
-				}
-			);
-		}
-	}, []);*/
 
   if (!session) {
     // Still loading
