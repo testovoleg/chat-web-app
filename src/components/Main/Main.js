@@ -62,12 +62,29 @@ import TemplatesResponse from '../../api/responses/TemplatesResponse';
 import UploadRecipientsCSV from '../UploadRecipientsCSV';
 import { findTagByName } from '../../helpers/TagHelper';
 import { setTags } from '../../store/reducers/tagsReducer';
+import { FrontendApi, Configuration, Session, Identity } from "@ory/client"
+
+// Get your Ory url from .env
+// Or localhost for local development
+const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000/.ory"
+const ory = new FrontendApi(
+  new Configuration({
+    basePath,
+    baseOptions: {
+      withCredentials: true,
+    },
+  }),
+)
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
 }
 
 function Main() {
+	///////////
+	const [session, setSession] = useState([])
+	const [logoutUrl, setLogoutUrl] = useState(0)
+	////////////////
 	const { apiService } = React.useContext(ApplicationContext);
 	const config = React.useContext(AppConfig);
 
@@ -375,7 +392,21 @@ function Main() {
 
 		// We assign this method to window, to be able to call it from outside (eg: mobile app)
 		window.goToChatByWaId = goToChatByWaId;
-
+		ory.toSession().then(({ data }) => {
+			// User has a session!
+			setSession(data)
+			ory.createBrowserLogoutFlow().then(({ data }) => {
+			  // Get also the logout url
+			  console.log(`Для разлогинивания ORY перейти по: ${data.logout_url}`)
+			  //setLogoutUrl(data.logout_url)
+  
+			})
+		  })
+		  .catch((err) => {
+			console.log('ORY error:',err)
+			// Redirect to login page
+			window.location.replace(`${basePath}/ui/login`)
+		  })
 		if (!getToken()) {
 			clearUserSession('notLoggedIn', location, history);
 		}

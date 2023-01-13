@@ -14,10 +14,10 @@ import { FrontendApi, Configuration, Session, Identity } from "@ory/client"
 
 // Get your Ory url from .env
 // Or localhost for local development
-const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000"
+const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000/.ory"
 const ory = new FrontendApi(
   new Configuration({
-    basePath:'http://localhost:4000',
+    basePath,
     baseOptions: {
       withCredentials: true,
     },
@@ -66,12 +66,13 @@ export default function Login(props) {
 		  setSession(data)
 		  ory.createBrowserLogoutFlow().then(({ data }) => {
 			// Get also the logout url
-			setLogoutUrl(data.logout_url)
-			console.log('data.logout_url:',data.logout_url)
+			console.log(`Для разлогинивания ORY перейти по: ${data.logout_url}`)
+			//setLogoutUrl(data.logout_url)
+
 		  })
 		})
 		.catch((err) => {
-		  console.log(err)
+		  console.log('ORY error:',err)
 		  // Redirect to login page
 		  window.location.replace(`${basePath}/ui/login`)
 		})
