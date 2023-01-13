@@ -67,7 +67,7 @@ export default function Login(props) {
     identity.traits.email || identity.traits.username
 	useEffect(() => {
 		ory.toSession().then(({ data }) => {
-		//console.log(data) // То, что возвращает ORY. Увидеть можно по http://localhost:4000/.ory/sessions/whoami либо в консоли
+		console.log(data) // То, что возвращает ORY. Увидеть можно по http://localhost:4000/.ory/sessions/whoami либо в консоли
 		  // User has a session!
 		  setSession(data)
 		  ory.createBrowserLogoutFlow().then(({ data }) => {
