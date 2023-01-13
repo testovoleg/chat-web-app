@@ -38,8 +38,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login(props) {
-	const [session, setSession] = useState([])
-  const [logoutUrl, setLogoutUrl] = useState(0)
+	const [session, setSession] = useState('')
+  const [logoutUrl, setLogoutUrl] = useState('')
   const { apiService } = React.useContext(ApplicationContext);
 
 	const { t } = useTranslation();
@@ -67,12 +67,12 @@ export default function Login(props) {
     identity.traits.email || identity.traits.username
 	useEffect(() => {
 		ory.toSession().then(({ data }) => {
-			console.log(data) // То, что возвращает ORY. Увидеть можно по http://localhost:4000/.ory/sessions/whoami либо в консоли
+		//console.log(data) // То, что возвращает ORY. Увидеть можно по http://localhost:4000/.ory/sessions/whoami либо в консоли
 		  // User has a session!
 		  setSession(data)
 		  ory.createBrowserLogoutFlow().then(({ data }) => {
 			// Get also the logout url
-			console.log(`Для разлогинивания ORY перейти по: ${data.logout_url}`)
+			console.log('Для разлогинивания ORY перейти по: ', data.logout_url)
 			//setLogoutUrl(data.logout_url)
 
 		  })
