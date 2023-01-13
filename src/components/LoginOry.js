@@ -14,6 +14,7 @@ import { FrontendApi, Configuration, Session, Identity } from "@ory/client"
 
 // Get your Ory url from .env
 // Or localhost for local development
+// Почитать про API ORY можно по ссылке https://www.ory.sh/docs/reference/api
 const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000/.ory"
 const ory = new FrontendApi(
   new Configuration({
@@ -34,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login(props) {
-	const [session, setSession] = useState<Session| undefined>()
-  const [logoutUrl, setLogoutUrl] = useState<string | undefined>()
+	const [session, setSession] = useState([])
+  const [logoutUrl, setLogoutUrl] = useState(0)
   const { apiService } = React.useContext(ApplicationContext);
 
 	const { t } = useTranslation();
@@ -58,10 +59,12 @@ export default function Login(props) {
 
 	const history = useHistory();
 	const location = useLocation();
+	/////ORY
 	const getUserName = (identity: Identity) =>
     identity.traits.email || identity.traits.username
 	useEffect(() => {
 		ory.toSession().then(({ data }) => {
+			console.log(data) // То, что возвращает ORY. Увидеть можно по http://localhost:4000/.ory/sessions/whoami либо в консоли
 		  // User has a session!
 		  setSession(data)
 		  ory.createBrowserLogoutFlow().then(({ data }) => {
@@ -85,8 +88,9 @@ export default function Login(props) {
 			}
 		}
 
-		//const token = getToken();
-		const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
+		/////ORY
+		const token = getToken();
+		//const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
 		
 		if (token) {
 			storeToken(token); //Сохранить токен в кэше == window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
@@ -141,24 +145,6 @@ export default function Login(props) {
 			);
 		}
 	}, []);*/
-  // Second, gather session data, if the user is not logged in, redirect to login
- /* useEffect(() => {
-    ory
-      .toSession()
-      .then(({ data }) => {
-        // User has a session!
-        setSession(data)
-        ory.createBrowserLogoutFlow().then(({ data }) => {
-          // Get also the logout url
-          setLogoutUrl(data.logout_url)
-        })
-      })
-      .catch((err) => {
-        console.error(err)
-        // Redirect to login page
-        window.location.replace(`${basePath}/ui/login`)
-      })
-  }, [])*/
 
   if (!session) {
     // Still loading

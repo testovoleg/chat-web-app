@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/index.css';
 import './styles/App.css';
-import App from './App.tsx';
+import App from './App.js';
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import { isLocalHost } from './helpers/URLHelper';
