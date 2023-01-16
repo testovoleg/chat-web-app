@@ -18,15 +18,6 @@ import { FrontendApi, Configuration, Session, Identity } from "@ory/client"
 //	Если ory proxy http://localhost:3000, то добавляем .ory, при этом после входа переадресовывать не умеет на локалхост
 //	Правила переадресации в консоли ORY, ссылка скорее всего непостоянная https://console.ory.sh/projects/54f40439-c43c-4331-8247-5f907ea49327/browser-redirects
 //	Если ory tunnel --dev http://localhost:3000, то без .ory
-const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000/.ory" 
-const ory = new FrontendApi(
-  new Configuration({
-    basePath,
-    baseOptions: {
-      withCredentials: true,
-    },
-  }),
-)
 
 
 
@@ -38,8 +29,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login(props) {
-  const [session, setSession] = useState('')
-  const [logoutUrl, setLogoutUrl] = useState('')
   const { apiService } = React.useContext(ApplicationContext);
 
 	const { t } = useTranslation();
@@ -66,22 +55,6 @@ export default function Login(props) {
 	const getUserName = (identity: Identity) =>
     identity.traits.email || identity.traits.username
 	useEffect(() => {
-		ory.toSession().then(({ data }) => {
-		console.log(data) // То, что возвращает ORY. Увидеть можно по http://localhost:4000/.ory/sessions/whoami либо в консоли
-		  // User has a session!
-		  setSession(data)
-		  ory.createBrowserLogoutFlow().then(({ data }) => {
-			// Get also the logout url
-			console.log('Для разлогинивания ORY перейти по: ', data.logout_url)
-			//setLogoutUrl(data.logout_url)
-
-		  })
-		})
-		.catch((err) => {
-		  console.log('ORY error:',err)
-		  // Redirect to login page
-		  window.location.replace(`${basePath}/ui/login`)
-		})
 		if (errorCase) {
 			setLoginError(errorMessages[errorCase]);
 
@@ -92,8 +65,8 @@ export default function Login(props) {
 		}
 
 		/////ORY
-		const token = getToken();
-		//const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
+		//const token = getToken();
+		const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
 		
 		if (token) {
 			storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
@@ -116,11 +89,6 @@ export default function Login(props) {
 		
 	}, []);
 
-
-  if (!session) {
-    // Still loading
-    return <h1>Loading...</h1>
-  }
 
   
 	

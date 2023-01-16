@@ -7,7 +7,7 @@ import {
 	Switch as RouteSwitch,
 } from 'react-router-dom';
 
-import Login from './components/LoginOry.js';
+import Login from './components/Login.js';
 import Main from './components/Main/Main';
 import AppTheme from './AppTheme';
 import { isIPad13 } from 'react-device-detect';

@@ -64,9 +64,14 @@ import { findTagByName } from '../../helpers/TagHelper';
 import { setTags } from '../../store/reducers/tagsReducer';
 import { FrontendApi, Configuration, Session, Identity } from "@ory/client"
 
-// Get your Ory url from .env
-// Or localhost for local development
+//	Get your Ory url from .env
+//	Or localhost for local development
+//	Почитать про API ORY можно по ссылке https://www.ory.sh/docs/reference/api
+//	Если ory proxy http://localhost:3000, то добавляем .ory, при этом после входа переадресовывать не умеет на локалхост
+//	Правила переадресации в консоли ORY, ссылка скорее всего непостоянная https://console.ory.sh/projects/54f40439-c43c-4331-8247-5f907ea49327/browser-redirects
+//	Если ory tunnel --dev http://localhost:3000, то без .ory
 const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000/.ory"
+const basePathapp = "http://localhost:4000/"
 const ory = new FrontendApi(
   new Configuration({
     basePath,
@@ -380,6 +385,30 @@ function Main() {
 		displayCustomError(data);
 	};
 
+
+	//ORY
+	useEffect(() => {
+		ory.toSession().then(({ data }) => {
+			// User has a session!
+			setSession(data)
+			ory.createBrowserLogoutFlow().then(({ data }) => {
+			  // Get also the logout url
+			  console.log('Для разлогинивания ORY перейти по: ', data.logout_url+'&return_to='+basePathapp)
+			  //setLogoutUrl(data.logout_url)
+			})
+		})
+		.catch((err) => {
+			console.log('ORY error:',err)
+			// Redirect to login page
+			window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
+		})
+		if (!getToken()) {
+			clearUserSession('notLoggedIn', location, history);
+		}
+	}, []);
+
+
+
 	useEffect(() => {
 		// Display custom errors in any component
 		window.displayCustomError = displayCustomError;
@@ -392,24 +421,6 @@ function Main() {
 
 		// We assign this method to window, to be able to call it from outside (eg: mobile app)
 		window.goToChatByWaId = goToChatByWaId;
-		ory.toSession().then(({ data }) => {
-			// User has a session!
-			setSession(data)
-			ory.createBrowserLogoutFlow().then(({ data }) => {
-			  // Get also the logout url
-			  console.log(`Для разлогинивания ORY перейти по: ${data.logout_url}`)
-			  //setLogoutUrl(data.logout_url)
-  
-			})
-		  })
-		  .catch((err) => {
-			console.log('ORY error:',err)
-			// Redirect to login page
-			window.location.replace(`${basePath}/ui/login`)
-		  })
-		if (!getToken()) {
-			clearUserSession('notLoggedIn', location, history);
-		}
 
 		// Retrieve current user, this will trigger other requests
 		retrieveCurrentUser();

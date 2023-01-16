@@ -49,20 +49,25 @@ export default function Login(props) {
 			setLoginError(errorMessages[errorCase]);
 
 			if (errorCase === 'invalidToken') {
+				console.log('Ошибка типовой аутентификации:', errorCase);
 				logoutToClearSession();
 			}
 		}
 
-		const token = getToken();
+		//const token = getToken();
+		const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
+		storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
 		if (token) {
+			
 			setValidatingToken(true);
-
+			console.log('Токен типовой аутентификации:', token);
 			apiService.baseCall(
 				(response) => {
 					// Redirect to main route
 					history.push('/main');
 				},
 				(error) => {
+					console.log('Ошибка типовой аутентификации:', error);
 					setValidatingToken(false);
 
 					// TODO: Make sure the response is Unauthorized
