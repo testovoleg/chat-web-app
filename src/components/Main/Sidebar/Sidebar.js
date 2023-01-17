@@ -45,13 +45,14 @@ import SearchMessageResult from '../../SearchMessageResult';
 import { isMobile, isMobileOnly } from 'react-device-detect';
 import ChatIcon from '@material-ui/icons/Chat';
 import Contacts from '../../Contacts';
-import { clearContactProvidersData } from '../../../helpers/StorageHelper';
+import { clearContactProvidersData, getlogouturl } from '../../../helpers/StorageHelper';
 import CloseIcon from '@material-ui/icons/Close';
 import BulkSendIndicator from './BulkSendIndicator';
 import SelectableChatTag from './SelectableChatTag';
 import BulkSendActions from './BulkSendActions';
 import {
 	clearUserSession,
+	clearUserOrySession,
 	generateCancelToken,
 } from '../../../helpers/ApiHelper';
 import Notifications from './Notifications/Notifications';
@@ -108,13 +109,16 @@ function Sidebar(props) {
 	const dispatch = useDispatch();
 
 	const logOut = () => {
-		clearUserSession(undefined, undefined, history);
-
+		//clearUserSession(undefined, undefined, history);
+		clearUserOrySession(undefined, undefined, history);
+		
 		// TODO: Consider calling it in clearUserSession method
 		dispatch(setCurrentUser({}));
 		dispatch(setTemplates({}));
 
 		hideMenu();
+		console.log('getlogouturl:', getlogouturl())
+		window.location.replace(getlogouturl())
 	};
 
 	const forceClearContactProvidersData = () => {

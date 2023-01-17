@@ -1,8 +1,10 @@
 import {
 	clearContactProvidersData,
 	clearToken,
+	clearSession,
 	getStorage,
 	STORAGE_TAG_TOKEN,
+	STORAGE_TAG_SESSION,
 } from './StorageHelper';
 import axios from 'axios';
 
@@ -63,4 +65,10 @@ export const clearUserSession = (errorCase, nextLocation, history) => {
 			search: nextLocation?.search,
 		});
 	}
+};
+export const clearUserOrySession = (errorCase, nextLocation, history) => {
+	clearToken();
+	clearSession();
+	clearContactProvidersData();
+	
 };

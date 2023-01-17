@@ -32,6 +32,7 @@ import PreviewMedia from './PreviewMedia';
 import {
 	getContactProvidersData,
 	getToken,
+	getSession,
 	storeContactProvidersData,
 } from '../../helpers/StorageHelper';
 import ChatAssignment from './ChatAssignment';
@@ -41,7 +42,7 @@ import DownloadUnsupportedFile from '../DownloadUnsupportedFile';
 import SavedResponseClass from '../../SavedResponseClass';
 import moment from 'moment';
 import UserModel from '../../api/models/UserModel';
-import { clearUserSession } from '../../helpers/ApiHelper';
+import { clearUserSession, clearUserOrySession} from '../../helpers/ApiHelper';
 import BulkMessageTaskElementModel from '../../api/models/BulkMessageTaskElementModel';
 import BulkMessageTaskModel from '../../api/models/BulkMessageTaskModel';
 import { getWebSocketURL } from '../../helpers/URLHelper';
@@ -62,24 +63,8 @@ import TemplatesResponse from '../../api/responses/TemplatesResponse';
 import UploadRecipientsCSV from '../UploadRecipientsCSV';
 import { findTagByName } from '../../helpers/TagHelper';
 import { setTags } from '../../store/reducers/tagsReducer';
-import { FrontendApi, Configuration, Session, Identity } from "@ory/client"
 
-//	Get your Ory url from .env
-//	Or localhost for local development
-//	Почитать про API ORY можно по ссылке https://www.ory.sh/docs/reference/api
-//	Если ory proxy http://localhost:3000, то добавляем .ory, при этом после входа переадресовывать не умеет на локалхост
-//	Правила переадресации в консоли ORY, ссылка скорее всего непостоянная https://console.ory.sh/projects/54f40439-c43c-4331-8247-5f907ea49327/browser-redirects
-//	Если ory tunnel --dev http://localhost:3000, то без .ory
-const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000/.ory"
-const basePathapp = "http://localhost:4000/"
-const ory = new FrontendApi(
-  new Configuration({
-    basePath,
-    baseOptions: {
-      withCredentials: true,
-    },
-  }),
-)
+
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -386,30 +371,24 @@ function Main() {
 	};
 
 
-	//ORY
+
 	useEffect(() => {
-		ory.toSession().then(({ data }) => {
-			// User has a session!
-			setSession(data)
-			ory.createBrowserLogoutFlow().then(({ data }) => {
-			  // Get also the logout url
-			  console.log('Для разлогинивания ORY перейти по: ', data.logout_url+'&return_to='+basePathapp)
-			  //setLogoutUrl(data.logout_url)
-			})
-		})
-		.catch((err) => {
-			console.log('ORY error:',err)
-			// Redirect to login page
-			window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
-		})
-		if (!getToken()) {
-			clearUserSession('notLoggedIn', location, history);
+		//if (!getToken()) {
+		//	clearUserSession('notLoggedIn', location, history);
+			//clearUserOrySession('notLoggedIn', location, history);
+		//}
+		const whatisthis= getSession();
+		if (whatisthis==null){
+		console.log('Сессия из Main не найдена')
 		}
-	}, []);
-
-
-
-	useEffect(() => {
+		else{
+			console.log('Сессия найдена')
+		}
+		if (getSession()==null) {
+			//clearUserSession('notLoggedIn', location, history);
+			clearUserOrySession('notLoggedIn', location, history);
+			window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
+		}
 		// Display custom errors in any component
 		window.displayCustomError = displayCustomError;
 
@@ -456,6 +435,7 @@ function Main() {
 		};
 	}, []);
 
+
 	useEffect(() => {
 		const CODE_NORMAL = 1000;
 		let ws;
@@ -473,8 +453,7 @@ function Main() {
 			ws = new WebSocket(getWebSocketURL(config.API_BASE_URL));
 
 			ws.onopen = function (event) {
-				console.log('Connected to websocket server.');
-
+				console.log('Connected to websocket server.');			
 				ws.send(JSON.stringify({ token: getToken() }));
 
 				if (socketClosedAt) {
@@ -508,7 +487,7 @@ function Main() {
 			};
 
 			ws.onmessage = function (event) {
-				console.log('New message:', event.data);
+				//console.log('New message:', event.data);
 
 				try {
 					const data = JSON.parse(event.data);

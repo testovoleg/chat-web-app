@@ -36,7 +36,6 @@
 		"axios": "^0.21.1",
 		"buffer": "^6.0.3",
 		"classnames": "^2.3.1",
-		"cors": "^2.8.5",
 		"dompurify": "^2.3.3",
 		"emoji-mart": "^3.0.0",
 		"emoji-regex": "^9.2.1",

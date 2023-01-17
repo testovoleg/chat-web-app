@@ -4,12 +4,31 @@ import { Backdrop, CircularProgress, Fade, TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { Alert } from '@material-ui/lab';
-import { clearToken, getToken, storeToken } from '../helpers/StorageHelper';
+import { clearToken, getToken,  getSession, storeToken, storeSession, storelogouturl } from '../helpers/StorageHelper';
+import { clearUserSession, clearUserOrySession} from '../helpers/ApiHelper';
 import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
 import { ApplicationContext } from '../contexts/ApplicationContext';
 import packageJson from '../../package.json';
+import { FrontendApi, Configuration, Session, Identity } from "@ory/client"
+import LoadingScreen from './Main/LoadingScreen';
 
+//	Get your Ory url from .env
+//	Or localhost for local development
+//	Почитать про API ORY можно по ссылке https://www.ory.sh/docs/reference/api
+//	Если ory proxy http://localhost:3000, то добавляем .ory, при этом после входа переадресовывать не умеет на локалхост
+//	Правила переадресации в консоли ORY, ссылка скорее всего непостоянная https://console.ory.sh/projects/54f40439-c43c-4331-8247-5f907ea49327/browser-redirects
+//	Если ory tunnel --dev http://localhost:3000, то без .ory
+const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000/.ory"
+const basePathapp = process.env.REACT_APP_ORY_REDIRECT_URL
+const ory = new FrontendApi(
+  new Configuration({
+    basePath,
+    baseOptions: {
+      withCredentials: true,
+    },
+  }),
+)
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,8 +37,13 @@ const useStyles = makeStyles((theme) => ({
 		color: '#fff',
 	},
 }));
+	///////////
+
 
 export default function Login(props) {
+	const [session, setSession] = useState({})
+	const [logoutUrl, setLogoutUrl] =  useState('')
+	////////////////
 
 	const { apiService } = React.useContext(ApplicationContext);
 
@@ -45,20 +69,56 @@ export default function Login(props) {
 	const location = useLocation();
 
 	useEffect(() => {
-		if (errorCase) {
-			setLoginError(errorMessages[errorCase]);
-
-			if (errorCase === 'invalidToken') {
-				console.log('Ошибка типовой аутентификации:', errorCase);
-				logoutToClearSession();
-			}
+		if (getSession()==null) {
+			//clearUserSession('notLoggedIn', location, history);
+			clearUserOrySession('notLoggedIn', location, history);
+			console.log('Нет сессии')
+			window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
 		}
+		ory
+		.toSession()
+		.then(({ data }) => {
+		  // User has a session!
+		  storeSession(JSON.stringify(data))
+		  const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
+		  storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
+		  setValidatingToken(true);	
+		  console.log('Есть сессия')	  
+		  console.log('Session', data);
+		  ory.createBrowserLogoutFlow().then(({ data }) => {
+			// Get also the logout url
+			//setLogoutUrl(data.logout_url)
+			storelogouturl(data.logout_url+'&return_to='+basePathapp); 
+		  })
+		})
+		.catch((err) => {
+		  console.error(err)
+		  // Redirect to login page
+		  window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
+		})
 
+		apiService.baseCall(
+			(response) => {
+				// Redirect to main route
+				history.push('/main');
+			},
+			(error) => {
+				console.log('Ошибка типовой аутентификации:', error);
+				setValidatingToken(false);
+				// TODO: Make sure the response is Unauthorized
+				clearToken();
+			})
+	}, []);
+
+	/*useEffect(() => {
+				//ORY
+				
 		//const token = getToken();
 		const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
 		storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
-		if (token) {
-			
+
+
+		if (token) {			
 			setValidatingToken(true);
 			console.log('Токен типовой аутентификации:', token);
 			apiService.baseCall(
@@ -75,7 +135,7 @@ export default function Login(props) {
 				}
 			);
 		}
-	}, []);
+	}, []);*/
 
 	const doLogin = async (e) => {
 		e.preventDefault();
@@ -130,6 +190,16 @@ export default function Login(props) {
 
 	return (
 		<div className="login">
+
+
+			<Backdrop className={classes.backdrop} open={isLoggingIn}>
+				<CircularProgress color="inherit" />
+			</Backdrop>
+		</div>
+	);
+}
+
+/*
 			<Fade in={true}>
 			
 				<div className="login__body">
@@ -190,9 +260,4 @@ export default function Login(props) {
 				</div>
 			</Fade>
 
-			<Backdrop className={classes.backdrop} open={isLoggingIn}>
-				<CircularProgress color="inherit" />
-			</Backdrop>
-		</div>
-	);
-}
+*/

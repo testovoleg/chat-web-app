@@ -2,6 +2,9 @@ import { LocalStorage } from '../storage/LocalStorage';
 import { MemoryStorage } from '../storage/MemoryStorage';
 
 export const STORAGE_TAG_TOKEN = 'token';
+export const STORAGE_TAG_SESSION = 'session';
+export const STORAGE_TAG_logouturl = 'logouturl';
+
 const STORAGE_TAG_DISPLAY_ASSIGNMENT_AND_TAGGING_HISTORY =
 	'display_assignment_and_tagging_history';
 const STORAGE_TAG_CONTACT_PROVIDERS_DATA = 'contact_providers_data';
@@ -33,13 +36,31 @@ export const getToken = () => {
 	return getStorage()?.getItem(STORAGE_TAG_TOKEN);
 };
 
+export const getSession = () => {
+	return getStorage()?.getItem(STORAGE_TAG_SESSION);
+};
+export const getlogouturl = () => {
+	return getStorage()?.getItem(STORAGE_TAG_logouturl);
+};
+
 export const storeToken = (token) => {
 	getStorage().setItem(STORAGE_TAG_TOKEN, token);
+};
+export const storeSession = (session) => {
+	getStorage().setItem(STORAGE_TAG_SESSION, session);
 };
 
 export const clearToken = () => {
 	getStorage().removeItem(STORAGE_TAG_TOKEN);
 };
+export const clearSession = () => {
+	getStorage().removeItem(STORAGE_TAG_SESSION);
+};
+
+export const storelogouturl = (logouturl) => {
+	getStorage().setItem(STORAGE_TAG_logouturl, logouturl);
+};
+
 
 export const getDisplayAssignmentAndTaggingHistory = () => {
 	const result = getStorage().getItem(
