@@ -1,25 +1,16 @@
-docker build . -f Dockerfile -t 5sauto/team:v0.001
-
-
---------------------------------
-current ver: v0.001
---------------------------------
-
-docker login -u 5s -p 5sRegistry hub.5-systems.ru
-
-5sRegistry
-
-Команда для того чтобы сделать доп.тэг для отправки на хаб:
+1. Заменить в .env значения.
+2. docker build . -f Dockerfile -t 5sauto/team:v0.001
+3. docker login -u 5s -p 5sRegistry hub.5-systems.ru
+Пароль:  5sRegistry
+4. Команда для того чтобы сделать доп.тэг для отправки на хаб:
 docker tag 5sauto/team:v0.001 hub.5-systems.ru/team:v0.001
-
-После тэга можно просто сделать push этого снимка:
+5. После тэга можно просто сделать push этого снимка:
 docker push hub.5-systems.ru/team:v0.001
 
 
 
 docker login -u 5sauto -p dckr_pat_DAfDYaBgpnEx973PrpPB8U5c3I8
 docker push 5sauto/team:v0.001
-
 
 
 # Ory 
