@@ -117,7 +117,7 @@ function Sidebar(props) {
 		dispatch(setTemplates({}));
 
 		hideMenu();
-		console.log('getlogouturl:', getlogouturl())
+		console.log('Переход по ссылке:', getlogouturl())
 		window.location.replace(getlogouturl())
 	};
 
@@ -951,7 +951,7 @@ function Sidebar(props) {
 					{t('Refresh contacts')}
 				</MenuItem>
 				{currentUser?.isAdmin && <Divider />}
-				{currentUser?.isAdmin && (
+			{/*	{currentUser?.isAdmin && (
 					<MenuItem
 						component={Link}
 						href={getHubURL(config.API_BASE_URL)}
@@ -960,7 +960,7 @@ function Sidebar(props) {
 					>
 						{t('Admin panel')}
 					</MenuItem>
-				)}
+				)}*/}
 				{isMobile && (
 					<MenuItem onClick={goToSettings}>{t('Settings (App Only)')}</MenuItem>
 				)}

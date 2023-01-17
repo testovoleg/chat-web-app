@@ -72,7 +72,7 @@ export default function Login(props) {
 		if (getSession()==null) {
 			//clearUserSession('notLoggedIn', location, history);
 			clearUserOrySession('notLoggedIn', location, history);
-			console.log('Нет сессии')
+			console.log('Не начата сессия')
 			window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
 		}
 		ory
@@ -83,8 +83,8 @@ export default function Login(props) {
 		  const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
 		  storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
 		  setValidatingToken(true);	
-		  console.log('Есть сессия')	  
-		  console.log('Session', data);
+		  console.log('Сессия найдена')	  
+		  //console.log('Session', data);
 		  ory.createBrowserLogoutFlow().then(({ data }) => {
 			// Get also the logout url
 			//setLogoutUrl(data.logout_url)
@@ -106,7 +106,8 @@ export default function Login(props) {
 				console.log('Ошибка типовой аутентификации:', error);
 				setValidatingToken(false);
 				// TODO: Make sure the response is Unauthorized
-				clearToken();
+				clearUserOrySession('notLoggedIn', location, history);
+				window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
 			})
 	}, []);
 

@@ -189,10 +189,10 @@ export default function Chat(props) {
 		window.pendingMessages = pendingMessages;
 
 		// Log state changes
-		console.log(
-			isSendingPendingMessages.toString(),
-			JSON.parse(JSON.stringify(pendingMessages))
-		);
+		//console.log(
+		//	isSendingPendingMessages.toString(),
+		//	JSON.parse(JSON.stringify(pendingMessages))
+		//);
 
 		const sendNextPending = () => {
 			const pendingMessageToSend =
@@ -290,7 +290,7 @@ export default function Chat(props) {
 		PubSub.publish(EVENT_TOPIC_EMOJI_PICKER_VISIBILITY, false);
 
 		if (!waId) {
-			console.log('waId is empty.');
+			//console.log('waId is empty.');
 			return false;
 		}
 

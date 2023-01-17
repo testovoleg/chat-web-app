@@ -373,10 +373,7 @@ function Main() {
 
 
 	useEffect(() => {
-		//if (!getToken()) {
-		//	clearUserSession('notLoggedIn', location, history);
-			//clearUserOrySession('notLoggedIn', location, history);
-		//}
+		
 		const whatisthis= getSession();
 		if (whatisthis==null){
 		console.log('Сессия из Main не найдена')
@@ -385,6 +382,11 @@ function Main() {
 			console.log('Сессия найдена')
 		}
 		if (getSession()==null) {
+			//clearUserSession('notLoggedIn', location, history);
+			clearUserOrySession('notLoggedIn', location, history);
+			window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
+		}
+		if (!getToken()) {
 			//clearUserSession('notLoggedIn', location, history);
 			clearUserOrySession('notLoggedIn', location, history);
 			window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
