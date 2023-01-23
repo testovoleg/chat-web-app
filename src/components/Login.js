@@ -79,7 +79,7 @@ export const checkORYsession  = async () => {
 		//
 		// Redirect to login page
 	})
-	if (errorOry==true && errorOryfetch=true;) {
+	if (errorOry==true && errorOryfetch==true) {
 		window.location.replace(`${basePathapp}`)
 	}
 	
