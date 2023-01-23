@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
 import { ApplicationContext } from '../contexts/ApplicationContext';
 import packageJson from '../../package.json';
-import { FrontendApi, Configuration, Session, Identity } from "@ory/client"
+import { FrontendApi, Configuration, Session, Identity, V0alpha2Api  } from "@ory/client"
 import LoadingScreen from './Main/LoadingScreen';
 import axios from 'axios';
 
@@ -30,10 +30,13 @@ const ory = new FrontendApi(
     },
   }),
 )
+
+
+
 let errorOry=false;
 let errorOryfetch=false;
 let errorOryAxios=false;
-
+export const STORAGE_TAG_SESSION = 'session';
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
 		zIndex: theme.zIndex.drawer + 1,
@@ -48,6 +51,9 @@ export const checkORYsession  = () => {
 			.then(({ data }) => {
 			// User has a session!
 			storeSession(JSON.stringify(data.id))
+			//console.log('window');
+			//console.log(window);
+			//window.localStorage.setItem(STORAGE_TAG_SESSION, data.id)
 			console.log('Первая проверка. Удачное обращение сессии ORY');
 			console.log(data.id);
 			//console.log('Session', data);
@@ -67,6 +73,7 @@ export const checkORYsession  = () => {
 		//
 		// Redirect to login page	
 };
+
 
 export const checkORYaxiossession  = () => {
 	axios({
