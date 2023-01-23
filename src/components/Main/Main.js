@@ -63,7 +63,7 @@ import TemplatesResponse from '../../api/responses/TemplatesResponse';
 import UploadRecipientsCSV from '../UploadRecipientsCSV';
 import { findTagByName } from '../../helpers/TagHelper';
 import { setTags } from '../../store/reducers/tagsReducer';
-
+import { checkORYsession} from '../Login';
 
 
 function useQuery() {
@@ -370,27 +370,29 @@ function Main() {
 		displayCustomError(data);
 	};
 
-
+	
 
 	useEffect(() => {
 		
-		const whatisthis= getSession();
-		if (whatisthis==null){
-		console.log('Сессия из Main не найдена')
-		}
-		else{
-			console.log('Сессия найдена')
-		}
 		if (getSession()==null) {
 			//clearUserSession('notLoggedIn', location, history);
-			clearUserOrySession('notLoggedIn', location, history);
-			window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
+			////clearUserOrySession('notLoggedIn', location, history);
+			console.log('Сессия не найдена')
+			console.log('Сессия:',getSession())	
+			////window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
 		}
 		if (!getToken()) {
 			//clearUserSession('notLoggedIn', location, history);
-			clearUserOrySession('notLoggedIn', location, history);
-			window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
+			////clearUserOrySession('notLoggedIn', location, history);
+			console.log('Токен не найден')
+			console.log('Токен:',getToken())
+			history.push(`/`);
 		}
+		if (getSession()){
+		console.log('Сессия найдена в Main', getSession())
+		}
+		
+		checkORYsession();
 		// Display custom errors in any component
 		window.displayCustomError = displayCustomError;
 

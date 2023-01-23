@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Component  } from 'react';
 import '../styles/Login.css';
 import { Backdrop, CircularProgress, Fade, TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -12,6 +12,7 @@ import { ApplicationContext } from '../contexts/ApplicationContext';
 import packageJson from '../../package.json';
 import { FrontendApi, Configuration, Session, Identity } from "@ory/client"
 import LoadingScreen from './Main/LoadingScreen';
+import axios from 'axios';
 
 //	Get your Ory url from .env
 //	Or localhost for local development
@@ -19,7 +20,7 @@ import LoadingScreen from './Main/LoadingScreen';
 //	Если ory proxy http://localhost:3000, то добавляем .ory, при этом после входа переадресовывать не умеет на локалхост
 //	Правила переадресации в консоли ORY, ссылка скорее всего непостоянная https://console.ory.sh/projects/54f40439-c43c-4331-8247-5f907ea49327/browser-redirects
 //	Если ory tunnel --dev http://localhost:3000, то без .ory
-const basePath = process.env.REACT_APP_ORY_URL || "http://localhost:4000/.ory"
+const basePath = process.env.REACT_APP_ORY_URL
 const basePathapp = process.env.REACT_APP_ORY_REDIRECT_URL
 const ory = new FrontendApi(
   new Configuration({
@@ -29,7 +30,8 @@ const ory = new FrontendApi(
     },
   }),
 )
-
+let errorOry=false;
+let errorOryfetch=false;
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -37,15 +39,61 @@ const useStyles = makeStyles((theme) => ({
 		color: '#fff',
 	},
 }));
+
 	///////////
+export const checkORYsession  = async () => {
+
+	const requestOptions = {
+			method: 'POST',
+			mode: 'cors',
+		};
+		const whoami= await fetch(`${basePath}/sessions/whoami`, requestOptions)
+		.then((res) => res.json())
+		 .then((data) => {
+			storeSession(data.id);
+			console.log('Первая проверка. Удачное обращение ORY fetch');
+			console.log(data.id)
+		 })
+		 .catch((err) => {
+			errorOryfetch=true;
+			console.log('Первая проверка. Ошибка сессии ORY fetch');
+		 });
+		ory
+			.toSession()
+			.then(({ data }) => {
+			// User has a session!
+			storeSession(JSON.stringify(data.id))
+			console.log('Вторая проверка. Удачное обращение сессии ORY');
+			//console.log('Session', data);
+			ory.createBrowserLogoutFlow().then(({ data }) => {
+			// Get also the logout url
+			//setLogoutUrl(data.logout_url)
+			storelogouturl(data.logout_url+'&return_to='+basePathapp); 
+		})	
+		})
+		.catch((err) => {
+			console.error(err)
+			console.log('Вторая проверка. Ошибка сессии ORY');
+			clearUserOrySession('notLoggedIn', '', '');
+			errorOry=true;
+		//
+		// Redirect to login page
+	})
+	if (errorOry==true && errorOryfetch=true;) {
+		window.location.replace(`${basePathapp}`)
+	}
+	
+};
+
 
 
 export default function Login(props) {
-	const [session, setSession] = useState({})
+	const [orysession, setSession] = useState(null)
 	const [logoutUrl, setLogoutUrl] =  useState('')
 	////////////////
-
 	const { apiService } = React.useContext(ApplicationContext);
+
+
 
 	const { t } = useTranslation();
 
@@ -69,47 +117,35 @@ export default function Login(props) {
 	const location = useLocation();
 
 	useEffect(() => {
-		if (getSession()==null) {
-			//clearUserSession('notLoggedIn', location, history);
-			clearUserOrySession('notLoggedIn', location, history);
-			console.log('Не начата сессия')
-			window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
-		}
-		ory
-		.toSession()
-		.then(({ data }) => {
-		  // User has a session!
-		  storeSession(JSON.stringify(data))
-		  const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
-		  storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
-		  setValidatingToken(true);	
-		  console.log('Сессия найдена')	  
-		  //console.log('Session', data);
-		  ory.createBrowserLogoutFlow().then(({ data }) => {
-			// Get also the logout url
-			//setLogoutUrl(data.logout_url)
-			storelogouturl(data.logout_url+'&return_to='+basePathapp); 
-		  })
-		})
-		.catch((err) => {
-		  console.error(err)
-		  // Redirect to login page
-		  window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
-		})
-
-		apiService.baseCall(
-			(response) => {
-				// Redirect to main route
-				history.push('/main');
-			},
-			(error) => {
-				console.log('Ошибка типовой аутентификации:', error);
-				setValidatingToken(false);
-				// TODO: Make sure the response is Unauthorized
-				clearUserOrySession('notLoggedIn', location, history);
-				window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
-			})
+		checkORYsession();
+		
 	}, []);
+
+	if (getSession()!=null) {
+		//clearUserSession('notLoggedIn', location, history);
+		////clearUserOrySession('notLoggedIn', location, history);
+		console.log('Сессия найдена в Login')
+		const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
+		storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token
+		if (window.AndroidWebInterface) {
+			window.AndroidWebInterface.registerUserToken(
+				token ?? ''
+			);
+		}
+		if (getToken()) {
+			//clearUserSession('notLoggedIn', location, history);
+			////clearUserOrySession('notLoggedIn', location, history);
+			console.log('Токен найден')
+			console.log('Токен:',getToken())
+			history.push(`/main`);
+		} else {
+			console.log('Токен не найден')
+			window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
+		}
+	} else{
+		console.log('Сессия не активна')
+		window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
+	}
 
 	/*useEffect(() => {
 				//ORY
@@ -137,6 +173,25 @@ export default function Login(props) {
 			);
 		}
 	}, []);*/
+	/*const checkTokenSession  = async () => {
+		
+		apiService.baseCall(
+			(response) => {	
+				// Redirect to main route
+				history.push('/main');
+				return true;
+			},
+			(error) => {
+				console.log('Ошибка типовой аутентификации:', error);
+				setValidatingToken(false);
+				return false;
+				// TODO: Make sure the response is Unauthorized
+				//clearUserOrySession('notLoggedIn', location, history);
+				//window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
+				
+			})
+	};
+	*/
 
 	const doLogin = async (e) => {
 		e.preventDefault();
@@ -166,7 +221,7 @@ export default function Login(props) {
 				}
 
 				// Redirect to main route
-				history.push((location.nextPath ?? '/main') + (location.search ?? ''));
+				//history.push((location.nextPath ?? '/main') + (location.search ?? ''));
 			},
 			(error) => {
 				// Hide the loading animation
@@ -190,9 +245,8 @@ export default function Login(props) {
 	};
 
 	return (
+		
 		<div className="login">
-
-
 			<Backdrop className={classes.backdrop} open={isLoggingIn}>
 				<CircularProgress color="inherit" />
 			</Backdrop>
