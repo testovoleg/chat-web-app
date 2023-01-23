@@ -32,6 +32,7 @@ const ory = new FrontendApi(
 )
 let errorOry=false;
 let errorOryfetch=false;
+let errorOryAxios=false;
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -41,50 +42,74 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 	///////////
-export const checkORYsession  = async () => {
-
-	const requestOptions = {
-			method: 'POST',
-			mode: 'cors',
-		};
-		const whoami= await fetch(`${basePath}/sessions/whoami`, requestOptions)
-		.then((res) => res.json())
-		 .then((data) => {
-			storeSession(data.id);
-			console.log('Первая проверка. Удачное обращение ORY fetch');
-			console.log(data.id)
-		 })
-		 .catch((err) => {
-			errorOryfetch=true;
-			console.log('Первая проверка. Ошибка сессии ORY fetch');
-		 });
+export const checkORYsession  = () => {
 		ory
 			.toSession()
 			.then(({ data }) => {
 			// User has a session!
 			storeSession(JSON.stringify(data.id))
-			console.log('Вторая проверка. Удачное обращение сессии ORY');
+			console.log('Первая проверка. Удачное обращение сессии ORY');
+			console.log(data.id);
 			//console.log('Session', data);
 			ory.createBrowserLogoutFlow().then(({ data }) => {
 			// Get also the logout url
 			//setLogoutUrl(data.logout_url)
 			storelogouturl(data.logout_url+'&return_to='+basePathapp); 
+			errorOry=false;
 		})	
 		})
 		.catch((err) => {
 			console.error(err)
-			console.log('Вторая проверка. Ошибка сессии ORY');
+			console.log('Первая проверка. Ошибка сессии ORY');
 			clearUserOrySession('notLoggedIn', '', '');
 			errorOry=true;
+		})
 		//
-		// Redirect to login page
-	})
-	if (errorOry==true && errorOryfetch==true) {
-		window.location.replace(`${basePathapp}`)
-	}
-	
+		// Redirect to login page	
 };
 
+export const checkORYaxiossession  = () => {
+	axios({
+		method: 'post',
+		baseURL: `${basePath}`,
+		url: '/sessions/whoami',
+	  }).then(response => {
+		if (response.data.id!=undefined) {
+		storeSession(response.data.id);
+		console.log('Вторая проверка. Удачное обращение ORY axios');
+		console.log(response.data.id)
+		errorOryAxios=false;
+		}	else {
+		errorOryAxios=true;
+		console.log('Вторая проверка. Неавторизован. ORY axios');
+		}
+		}
+	  )
+	  .catch(error => {
+		console.log('Вторая проверка. Ошибка сессии ORY axios');
+		errorOryAxios=true;
+		console.log(error)
+	  });
+};
+export const checkORYfetchsession  = () => {
+	const whoami=fetch(`${basePath}/sessions/whoami`)
+		.then((res) => res.json())
+		 .then((data) => {
+			if (data.id!=undefined) {
+			storeSession(data.id);
+			console.log('Третья проверка. Удачное обращение ORY fetch');
+			console.log(data.id)
+			errorOryfetch=false;}			
+			else {
+			errorOryfetch=true;
+			console.log('Третья проверка. Неавторизован. ORY fetch');
+			}
+		 })
+		 .catch((err) => {
+			errorOryfetch=true;
+			console.log('Третья проверка. Ошибка сессии ORY fetch');
+		 });
+};
 
 
 export default function Login(props) {
@@ -118,7 +143,8 @@ export default function Login(props) {
 
 	useEffect(() => {
 		checkORYsession();
-		
+		checkORYaxiossession();
+		checkORYfetchsession();
 	}, []);
 
 	if (getSession()!=null) {
@@ -314,5 +340,58 @@ export default function Login(props) {
 					</div>
 				</div>
 			</Fade>
+
+
+
+
+
+
+
+			
+	const requestOptions = {
+			method: 'POST',
+		};
+		const whoami=fetch(`${basePath}/sessions/whoami`)
+		.then((res) => res.json())
+		 .then((data) => {
+			if (data.id!=undefined) {
+			storeSession(data.id);
+			console.log('Первая проверка. Удачное обращение ORY fetch');
+			console.log(data.id)
+			errorOryfetch=false;}			
+			else {
+			errorOryfetch=true;
+			console.log('Первая проверка. Неавторизован. ORY fetch');
+			}
+		 })
+		 .catch((err) => {
+			errorOryfetch=true;
+			console.log('Первая проверка. Ошибка сессии ORY fetch');
+		 });
+		 if (errorOryfetch==true){	
+		 axios({
+			method: 'post',
+			baseURL: `${basePath}`,
+			url: '/sessions/whoami',
+		  }).then(response => {
+			if (response.data.id!=undefined) {
+			storeSession(response.data.id);
+			console.log('Вторая проверка. Удачное обращение ORY axios');
+			console.log(response.data.id)
+			errorOryAxios=false;
+			}	else {
+			errorOryAxios=true;
+			console.log('Первая проверка. Неавторизован. ORY fetch');
+			}
+			}
+		  )
+		  .catch(error => {
+			console.log('Вторая проверка. Ошибка сессии ORY axios');
+			errorOryAxios=true;
+			console.log(error)
+		  });
+		}
+
+		if (errorOryAxios==true && errorOryfetch==true){	
 
 */

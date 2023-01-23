@@ -373,26 +373,26 @@ function Main() {
 	
 
 	useEffect(() => {
-		
-		if (getSession()==null) {
-			//clearUserSession('notLoggedIn', location, history);
-			////clearUserOrySession('notLoggedIn', location, history);
-			console.log('Сессия не найдена')
-			console.log('Сессия:',getSession())	
+		checkORYsession();
+		if (getSession()==null || !getToken()) {
+			if (getSession()==null){
+				console.log('Сессия не найдена')
+				console.log('Сессия:',getSession())	
+			}
+			if (!getToken()) {
+
+				console.log('Токен не найден')
+				console.log('Токен:',getToken())
+			}
+			history.push(`/`);
 			////window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
 		}
-		if (!getToken()) {
-			//clearUserSession('notLoggedIn', location, history);
-			////clearUserOrySession('notLoggedIn', location, history);
-			console.log('Токен не найден')
-			console.log('Токен:',getToken())
-			history.push(`/`);
-		}
+
 		if (getSession()){
 		console.log('Сессия найдена в Main', getSession())
 		}
 		
-		checkORYsession();
+		
 		// Display custom errors in any component
 		window.displayCustomError = displayCustomError;
 
