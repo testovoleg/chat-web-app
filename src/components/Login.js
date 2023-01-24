@@ -44,11 +44,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-	///////////
+///////////
 export const checkORYsession  = () => {
-		ory
-			.toSession()
-			.then(({ data }) => {
+	ory
+		.toSession()
+		.then(({ data }) => {
 			// User has a session!
 			storeSession(JSON.stringify(data.id))
 			//console.log('window');
@@ -58,11 +58,11 @@ export const checkORYsession  = () => {
 			console.log(data.id);
 			//console.log('Session', data);
 			ory.createBrowserLogoutFlow().then(({ data }) => {
-			// Get also the logout url
-			//setLogoutUrl(data.logout_url)
-			storelogouturl(data.logout_url+'&return_to='+basePathapp); 
-			errorOry=false;
-		})	
+				// Get also the logout url
+				//setLogoutUrl(data.logout_url)
+				storelogouturl(data.logout_url+'&return_to='+basePathapp); 
+				errorOry=false;
+			})	
 		})
 		.catch((err) => {
 			console.error(err)
@@ -70,14 +70,15 @@ export const checkORYsession  = () => {
 			clearUserOrySession('notLoggedIn', '', '');
 			errorOry=true;
 		})
-		//
-		// Redirect to login page	
+	//
+	// Redirect to login page	
 };
 
 
 export const checkORYaxiossession  = () => {
 	axios({
 		method: 'post',
+		withCredentials: 'true',
 		baseURL: `${basePath}`,
 		url: '/sessions/whoami',
 	  }).then(response => {
