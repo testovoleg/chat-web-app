@@ -78,7 +78,7 @@ export const checkORYsession  = () => {
 export const checkORYaxiossession  = () => {
 	axios({
 		method: 'post',
-		withCredentials: 'true',
+		withCredentials: true,
 		baseURL: `${basePath}`,
 		url: '/sessions/whoami',
 	  }).then(response => {
@@ -150,36 +150,41 @@ export default function Login(props) {
 	const location = useLocation();
 
 	useEffect(() => {
-		checkORYsession();
-		checkORYaxiossession();
-		checkORYfetchsession();
+
 	}, []);
 
-	if (getSession()!=null) {
-		//clearUserSession('notLoggedIn', location, history);
-		////clearUserOrySession('notLoggedIn', location, history);
-		console.log('Сессия найдена в Login')
-		const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
-		storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token
-		if (window.AndroidWebInterface) {
-			window.AndroidWebInterface.registerUserToken(
-				token ?? ''
-			);
-		}
-		if (getToken()) {
-			//clearUserSession('notLoggedIn', location, history);
-			////clearUserOrySession('notLoggedIn', location, history);
-			console.log('Токен найден')
-			console.log('Токен:',getToken())
-			history.push(`/main`);
-		} else {
-			console.log('Токен не найден')
+	ory
+		.toSession()
+		.then(({ data }) => {
+			// User has a session!
+			storeSession(JSON.stringify(data.id))
+			//console.log('window');
+			//console.log(window);
+			//window.localStorage.setItem(STORAGE_TAG_SESSION, data.id)
+			console.log('Первая проверка. Удачное обращение сессии ORY');
+			console.log(data.id);
+			//console.log('Session', data);
+			ory.createBrowserLogoutFlow().then(({ data }) => {
+				// Get also the logout url
+				//setLogoutUrl(data.logout_url)
+				storelogouturl(data.logout_url+'&return_to='+basePathapp); 
+				errorOry=false;
+			})
+			if (data.id!=null) {
+				console.log('Сессия найдена в Login')
+				const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
+				storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token
+				}	
+		})
+		.catch((err) => {
+			console.error(err)
+			clearUserOrySession('notLoggedIn', '', '');
+			console.log('Сессия не активна')
 			window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
-		}
-	} else{
-		console.log('Сессия не активна')
-		window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
-	}
+			errorOry=true;
+		})
+	//
+
 
 	/*useEffect(() => {
 				//ORY
