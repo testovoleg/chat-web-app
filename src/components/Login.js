@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 ///////////
-export const checkORYsession  = () => {
+export const checkORYsession = () => {
 	ory
 		.toSession()
 		.then(({ data }) => {
@@ -72,51 +72,6 @@ export const checkORYsession  = () => {
 		})
 	//
 	// Redirect to login page	
-};
-
-
-export const checkORYaxiossession  = () => {
-	axios({
-		method: 'post',
-		withCredentials: true,
-		baseURL: `${basePath}`,
-		url: '/sessions/whoami',
-	  }).then(response => {
-		if (response.data.id!=undefined) {
-		storeSession(response.data.id);
-		console.log('Вторая проверка. Удачное обращение ORY axios');
-		console.log(response.data.id)
-		errorOryAxios=false;
-		}	else {
-		errorOryAxios=true;
-		console.log('Вторая проверка. Неавторизован. ORY axios');
-		}
-		}
-	  )
-	  .catch(error => {
-		console.log('Вторая проверка. Ошибка сессии ORY axios');
-		errorOryAxios=true;
-		console.log(error)
-	  });
-};
-export const checkORYfetchsession  = () => {
-	const whoami=fetch(`${basePath}/sessions/whoami`)
-		.then((res) => res.json())
-		 .then((data) => {
-			if (data.id!=undefined) {
-			storeSession(data.id);
-			console.log('Третья проверка. Удачное обращение ORY fetch');
-			console.log(data.id)
-			errorOryfetch=false;}			
-			else {
-			errorOryfetch=true;
-			console.log('Третья проверка. Неавторизован. ORY fetch');
-			}
-		 })
-		 .catch((err) => {
-			errorOryfetch=true;
-			console.log('Третья проверка. Ошибка сессии ORY fetch');
-		 });
 };
 
 
@@ -151,9 +106,11 @@ export default function Login(props) {
 
 	useEffect(() => {
 
+    
+    // checkORYfetchsession();
 	}, []);
-
-	ory
+  
+  ory
 		.toSession()
 		.then(({ data }) => {
 			// User has a session!
@@ -164,73 +121,43 @@ export default function Login(props) {
 			console.log('Первая проверка. Удачное обращение сессии ORY');
 			console.log(data.id);
 			//console.log('Session', data);
-			ory.createBrowserLogoutFlow().then(({ data }) => {
-				// Get also the logout url
-				//setLogoutUrl(data.logout_url)
-				storelogouturl(data.logout_url+'&return_to='+basePathapp); 
-				errorOry=false;
-			})
-			if (data.id!=null) {
-				console.log('Сессия найдена в Login')
-				const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
-				storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token
-				}	
-		})
+			ory
+        .createBrowserLogoutFlow()
+        .then(({ data }) => {
+          // Get also the logout url
+          //setLogoutUrl(data.logout_url)
+          storelogouturl(data.logout_url+'&return_to='+basePathapp); 
+          errorOry=false;
+			  })	
+
+      if (data.id == null || data.id == "") {
+        console.log('Токен не найден')
+        window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
+      } else {
+        //clearUserSession('notLoggedIn', location, history);
+        ////clearUserOrySession('notLoggedIn', location, history);
+        console.log('Сессия найдена в Login')
+        const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
+        storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token
+        //clearUserSession('notLoggedIn', location, history);
+        ////clearUserOrySession('notLoggedIn', location, history);
+        console.log('Токен найден')
+        console.log('Токен:',getToken())
+        history.push(`/main`);
+		  }
+    })
 		.catch((err) => {
 			console.error(err)
+			console.log('Первая проверка. Ошибка сессии ORY');
 			clearUserOrySession('notLoggedIn', '', '');
-			console.log('Сессия не активна')
-			window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
 			errorOry=true;
+
+      console.log('Сессия не активна')
+      window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
 		})
-	//
 
 
-	/*useEffect(() => {
-				//ORY
-				
-		//const token = getToken();
-		const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
-		storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
 
-
-		if (token) {			
-			setValidatingToken(true);
-			console.log('Токен типовой аутентификации:', token);
-			apiService.baseCall(
-				(response) => {
-					// Redirect to main route
-					history.push('/main');
-				},
-				(error) => {
-					console.log('Ошибка типовой аутентификации:', error);
-					setValidatingToken(false);
-
-					// TODO: Make sure the response is Unauthorized
-					clearToken();
-				}
-			);
-		}
-	}, []);*/
-	/*const checkTokenSession  = async () => {
-		
-		apiService.baseCall(
-			(response) => {	
-				// Redirect to main route
-				history.push('/main');
-				return true;
-			},
-			(error) => {
-				console.log('Ошибка типовой аутентификации:', error);
-				setValidatingToken(false);
-				return false;
-				// TODO: Make sure the response is Unauthorized
-				//clearUserOrySession('notLoggedIn', location, history);
-				//window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
-				
-			})
-	};
-	*/
 
 	const doLogin = async (e) => {
 		e.preventDefault();
@@ -353,58 +280,5 @@ export default function Login(props) {
 					</div>
 				</div>
 			</Fade>
-
-
-
-
-
-
-
-			
-	const requestOptions = {
-			method: 'POST',
-		};
-		const whoami=fetch(`${basePath}/sessions/whoami`)
-		.then((res) => res.json())
-		 .then((data) => {
-			if (data.id!=undefined) {
-			storeSession(data.id);
-			console.log('Первая проверка. Удачное обращение ORY fetch');
-			console.log(data.id)
-			errorOryfetch=false;}			
-			else {
-			errorOryfetch=true;
-			console.log('Первая проверка. Неавторизован. ORY fetch');
-			}
-		 })
-		 .catch((err) => {
-			errorOryfetch=true;
-			console.log('Первая проверка. Ошибка сессии ORY fetch');
-		 });
-		 if (errorOryfetch==true){	
-		 axios({
-			method: 'post',
-			baseURL: `${basePath}`,
-			url: '/sessions/whoami',
-		  }).then(response => {
-			if (response.data.id!=undefined) {
-			storeSession(response.data.id);
-			console.log('Вторая проверка. Удачное обращение ORY axios');
-			console.log(response.data.id)
-			errorOryAxios=false;
-			}	else {
-			errorOryAxios=true;
-			console.log('Первая проверка. Неавторизован. ORY fetch');
-			}
-			}
-		  )
-		  .catch(error => {
-			console.log('Вторая проверка. Ошибка сессии ORY axios');
-			errorOryAxios=true;
-			console.log(error)
-		  });
-		}
-
-		if (errorOryAxios==true && errorOryfetch==true){	
 
 */
