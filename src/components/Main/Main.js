@@ -33,6 +33,8 @@ import {
 	getContactProvidersData,
 	getToken,
 	getSession,
+	storeSession,
+	storelogouturl,
 	storeContactProvidersData,
 } from '../../helpers/StorageHelper';
 import ChatAssignment from './ChatAssignment';
@@ -63,7 +65,18 @@ import TemplatesResponse from '../../api/responses/TemplatesResponse';
 import UploadRecipientsCSV from '../UploadRecipientsCSV';
 import { findTagByName } from '../../helpers/TagHelper';
 import { setTags } from '../../store/reducers/tagsReducer';
-import { checkORYsession} from '../Login';
+import { FrontendApi, Configuration, Session, Identity, V0alpha2Api  } from "@ory/client"
+
+const basePath = process.env.REACT_APP_ORY_URL
+const basePathapp = process.env.REACT_APP_ORY_REDIRECT_URL
+const ory = new FrontendApi(
+  new Configuration({
+    basePath,
+    baseOptions: {
+      withCredentials: true,
+    },
+  }),
+)
 
 
 function useQuery() {
@@ -373,24 +386,32 @@ function Main() {
 	
 
 	useEffect(() => {
-		checkORYsession();
+		ory
+		.toSession()
+		.then(({ data }) => {
+			// User has a session!
+			storeSession(JSON.stringify(data.id))
+			console.log('Удачное обращение сессии ORY. ID сессии', data.id);
+			ory.createBrowserLogoutFlow().then(({ data }) => {
+				storelogouturl(data.logout_url+'&return_to='+basePathapp); 
+			})	
+		})
+		.catch((err) => {
+			console.error(err)
+			console.log('Ошибка сессии ORY');
+			clearUserOrySession('notLoggedIn', '', '');
+		})
 		if (getSession()==null || !getToken()) {
 			if (getSession()==null){
-				console.log('Сессия не найдена')
-				console.log('Сессия:',getSession())	
+				console.log('Сессия не найдена. Сессия:',getSession())
 			}
 			if (!getToken()) {
 
-				console.log('Токен не найден')
-				console.log('Токен:',getToken())
+				console.log('Токен не найден. Токен:',getToken())
 			}
 			history.push(`/`);
-			////window.location.replace(`${process.env.REACT_APP_ORY_URL}/ui/login?return_to=${process.env.REACT_APP_ORY_REDIRECT_URL}`)
 		}
 
-		if (getSession()){
-		console.log('Сессия найдена в Main', getSession())
-		}
 		
 		
 		// Display custom errors in any component

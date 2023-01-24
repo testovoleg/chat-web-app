@@ -31,12 +31,6 @@ const ory = new FrontendApi(
   }),
 )
 
-
-
-let errorOry=false;
-let errorOryfetch=false;
-let errorOryAxios=false;
-export const STORAGE_TAG_SESSION = 'session';
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
 		zIndex: theme.zIndex.drawer + 1,
@@ -44,35 +38,26 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-///////////
 export const checkORYsession = () => {
 	ory
-		.toSession()
-		.then(({ data }) => {
+		.toSession().then(({ data }) => {
 			// User has a session!
 			storeSession(JSON.stringify(data.id))
-			//console.log('window');
-			//console.log(window);
-			//window.localStorage.setItem(STORAGE_TAG_SESSION, data.id)
-			console.log('Первая проверка. Удачное обращение сессии ORY');
-			console.log(data.id);
-			//console.log('Session', data);
+			console.log('Удачное обращение сессии ORY. ID сессии', data.id);
 			ory.createBrowserLogoutFlow().then(({ data }) => {
 				// Get also the logout url
-				//setLogoutUrl(data.logout_url)
 				storelogouturl(data.logout_url+'&return_to='+basePathapp); 
-				errorOry=false;
 			})	
 		})
 		.catch((err) => {
 			console.error(err)
-			console.log('Первая проверка. Ошибка сессии ORY');
+			console.log('Ошибка сессии ORY');
 			clearUserOrySession('notLoggedIn', '', '');
-			errorOry=true;
 		})
-	//
-	// Redirect to login page	
 };
+
+
+
 
 
 export default function Login(props) {
@@ -104,56 +89,37 @@ export default function Login(props) {
 	const history = useHistory();
 	const location = useLocation();
 
-	useEffect(() => {
+	// useEffect(() => {
 
-    
-    // checkORYfetchsession();
-	}, []);
+	// }, []);
   
-  ory
-		.toSession()
-		.then(({ data }) => {
+	ory
+		.toSession().then(({ data }) => {
 			// User has a session!
 			storeSession(JSON.stringify(data.id))
-			//console.log('window');
-			//console.log(window);
-			//window.localStorage.setItem(STORAGE_TAG_SESSION, data.id)
-			console.log('Первая проверка. Удачное обращение сессии ORY');
-			console.log(data.id);
-			//console.log('Session', data);
+			console.log('Удачное обращение сессии ORY, ID сессии:', data.id);
 			ory
-        .createBrowserLogoutFlow()
-        .then(({ data }) => {
-          // Get also the logout url
-          //setLogoutUrl(data.logout_url)
-          storelogouturl(data.logout_url+'&return_to='+basePathapp); 
-          errorOry=false;
-			  })	
+        .createBrowserLogoutFlow().then(({ data }) => {
+        	// Get also the logout url
+        	storelogouturl(data.logout_url+'&return_to='+basePathapp); 
+		})	
 
-      if (data.id == null || data.id == "") {
+		if (data.id == null || data.id == "") {
         console.log('Токен не найден')
         window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
-      } else {
-        //clearUserSession('notLoggedIn', location, history);
-        ////clearUserOrySession('notLoggedIn', location, history);
-        console.log('Сессия найдена в Login')
-        const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
-        storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token
-        //clearUserSession('notLoggedIn', location, history);
-        ////clearUserOrySession('notLoggedIn', location, history);
-        console.log('Токен найден')
-        console.log('Токен:',getToken())
-        history.push(`/main`);
-		  }
-    })
+		} else {
+			console.log('Сессия найдена в Login')
+			const token = "630a85d41fec9bac44d3662d6ce6936ee5cf48b1";  //Токен Юры  y.rastopchinov@5systems.ru Rast_9136
+			storeToken(token); //Сохранить токен в кэше, равносильно window.activeStorage.setItem(STORAGE_TAG_TOKEN, token)
+			console.log('Токен найден:',getToken())
+			history.push(`/main`);
+		}
+    	})
 		.catch((err) => {
 			console.error(err)
-			console.log('Первая проверка. Ошибка сессии ORY');
 			clearUserOrySession('notLoggedIn', '', '');
-			errorOry=true;
-
-      console.log('Сессия не активна')
-      window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
+      		console.log('Сессия не активна')
+      		window.location.replace(`${basePath}/ui/login?return_to=${basePathapp}`)
 		})
 
 
@@ -187,7 +153,7 @@ export default function Login(props) {
 				}
 
 				// Redirect to main route
-				//history.push((location.nextPath ?? '/main') + (location.search ?? ''));
+				history.push((location.nextPath ?? '/main') + (location.search ?? ''));
 			},
 			(error) => {
 				// Hide the loading animation
@@ -210,8 +176,7 @@ export default function Login(props) {
 		apiService.logoutCall();
 	};
 
-	return (
-		
+	return (	
 		<div className="login">
 			<Backdrop className={classes.backdrop} open={isLoggingIn}>
 				<CircularProgress color="inherit" />

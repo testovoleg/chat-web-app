@@ -60,7 +60,7 @@ function LoadingScreen(props) {
 					</Alert>
 
 					<div className="loadingScreen__actions">
-						<a className="loadingScreen__link" href="mailto:support@get.chat">
+						<a className="loadingScreen__link" href="mailto:help@5-systems.ru">
 							{t('Contact us')}
 						</a>
 						{/* <span className="loadingScreen__link" onClick={skip}>
